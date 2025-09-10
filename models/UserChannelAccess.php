@@ -15,12 +15,10 @@ use Yii;
  * @property string|null $created_at
  *
  * @property TelegramChannel $channel
- * @property User $user
+ * @property TelegramUser $user
  */
 class UserChannelAccess extends \yii\db\ActiveRecord
 {
-
-
     /**
      * {@inheritdoc}
      */
@@ -42,7 +40,7 @@ class UserChannelAccess extends \yii\db\ActiveRecord
             [['granted_at', 'created_at'], 'safe'],
             [['user_id', 'channel_id'], 'unique', 'targetAttribute' => ['user_id', 'channel_id']],
             [['channel_id'], 'exist', 'skipOnError' => true, 'targetClass' => TelegramChannel::class, 'targetAttribute' => ['channel_id' => 'id']],
-            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['user_id' => 'id']],
+            [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => TelegramUser::class, 'targetAttribute' => ['user_id' => 'id']],
         ];
     }
 
@@ -72,13 +70,12 @@ class UserChannelAccess extends \yii\db\ActiveRecord
     }
 
     /**
-     * Gets query for [[User]].
+     * Gets query for [[TelegramUser]].
      *
      * @return \yii\db\ActiveQuery
      */
     public function getUser()
     {
-        return $this->hasOne(User::class, ['id' => 'user_id']);
+        return $this->hasOne(TelegramUser::class, ['id' => 'user_id']);
     }
-
 }

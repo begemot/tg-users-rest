@@ -15,7 +15,7 @@ use Yii;
  * @property string|null $created_at
  *
  * @property UserChannelAccess[] $userChannelAccesses
- * @property User[] $users
+ * @property TelegramUser[] $users
  */
 class TelegramChannel extends \yii\db\ActiveRecord
 {
@@ -78,7 +78,7 @@ class TelegramChannel extends \yii\db\ActiveRecord
      */
     public function getUsers()
     {
-        return $this->hasMany(User::class, ['id' => 'user_id'])->viaTable('user_channel_access', ['channel_id' => 'id']);
+        return $this->hasMany(TelegramUser::class, ['id' => 'user_id'])->viaTable('user_channel_access', ['channel_id' => 'id']);
     }
 
 }
