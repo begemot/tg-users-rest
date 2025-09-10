@@ -49,7 +49,8 @@ $config = [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
-                ['class' => 'yii\\rest\\UrlRule', 'controller' => ['telegram-user', 'telegram-channel', 'user-channel-access']],
+                ['class' => 'yii\\rest\\UrlRule', 'controller' => ['telegram-user', 'telegram-channel']],
+                ['class' => 'yii\\rest\\UrlRule', 'controller' => ['user-channel-access'], 'extraPatterns' => ['POST verify' => 'verify']],
             ],
         ],
     ],
