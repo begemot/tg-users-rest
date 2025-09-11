@@ -8,7 +8,6 @@ use Yii;
  * This is the model class for table "telegram_channel".
  *
  * @property int $id
- * @property string $channel_id
  * @property string $channel_name
  * @property string|null $description
  * @property int|null $is_active
@@ -37,12 +36,11 @@ class TelegramChannel extends \yii\db\ActiveRecord
         return [
             [['description'], 'default', 'value' => null],
             [['is_active'], 'default', 'value' => 1],
-            [['channel_id', 'channel_name'], 'required'],
+            [[ 'channel_name'], 'required'],
             [['description'], 'string'],
             [['is_active'], 'integer'],
             [['created_at'], 'safe'],
-            [['channel_id', 'channel_name'], 'string', 'max' => 255],
-            [['channel_id'], 'unique'],
+        
         ];
     }
 
@@ -53,7 +51,6 @@ class TelegramChannel extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'channel_id' => 'Channel ID',
             'channel_name' => 'Channel Name',
             'description' => 'Description',
             'is_active' => 'Is Active',

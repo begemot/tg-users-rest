@@ -8,7 +8,7 @@ use Yii;
  * This is the model class for table "user".
  *
  * @property int $id
- * @property string $chat_id
+ * @property string $system_user_id
  * @property string|null $username
  * @property string|null $first_name
  * @property string|null $last_name
@@ -35,12 +35,12 @@ class TelegramUser extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['chat_id'], 'required'],
+      
             [['is_active'], 'default', 'value' => 0],
             [['is_active'], 'integer'],
             [['created_at', 'updated_at'], 'safe'],
-            [['chat_id', 'username', 'first_name', 'last_name'], 'string', 'max' => 255],
-            [['chat_id'], 'unique'],
+            [['system_user_id', 'username', 'first_name', 'last_name'], 'string', 'max' => 255],
+            [['system_user_id'], 'unique'],
         ];
     }
 
@@ -51,7 +51,7 @@ class TelegramUser extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'chat_id' => 'Chat ID',
+            'system_user_id' => 'user Telegram id',
             'username' => 'Username',
             'first_name' => 'First Name',
             'last_name' => 'Last Name',

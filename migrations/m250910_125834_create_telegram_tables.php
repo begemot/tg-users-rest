@@ -10,7 +10,7 @@ public function safeUp()
     // Таблица пользователей (чат-ID)
     $this->createTable('user', [
         'id' => $this->primaryKey(),
-        'chat_id' => $this->string(255)->notNull()->unique(),
+        'system_user_id' => $this->string(255)->notNull()->unique(),
         'username' => $this->string(255),
         'first_name' => $this->string(255),
         'last_name' => $this->string(255),
@@ -22,7 +22,6 @@ public function safeUp()
     // Таблица телеграм каналов
     $this->createTable('telegram_channel', [
         'id' => $this->primaryKey(),
-        'channel_id' => $this->string(255)->notNull()->unique(),
         'channel_name' => $this->string(255)->notNull(),
         'description' => $this->text(),
         'is_active' => $this->boolean()->defaultValue(true),

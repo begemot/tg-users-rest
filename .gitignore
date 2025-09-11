@@ -32,3 +32,4 @@ tests/_support/_generated
 #vagrant folder
 /.vagrant
 index.html
+.vscode/settings.json
