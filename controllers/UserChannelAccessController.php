@@ -15,12 +15,11 @@ class UserChannelAccessController extends ActiveController
     public function actionVerify()
     {
         $chatId = Yii::$app->request->getBodyParam('chat_id');
-        $telegramUserId = Yii::$app->request->getBodyParam('user_id');
         $channelName = Yii::$app->request->getBodyParam('channel_name');
 
-        if ($chatId === null || $telegramUserId === null || $channelName === null) {
+        if ($chatId === null || $channelName === null) {
             Yii::$app->response->statusCode = 400;
-            return ['error' => 'chat_id, user_id и channel_name обязательны'];
+            return ['error' => 'chat_id и channel_name обязательны'];
         }
 
         $channel = TelegramChannel::findOne(['channel_name' => $channelName]);
@@ -32,10 +31,10 @@ class UserChannelAccessController extends ActiveController
             $channel->save();
         }
 
-        $user = TelegramUser::findOne(['chat_id' => $telegramUserId]);
+        $user = TelegramUser::findOne(['chat_id' => $chatId]);
         if ($user === null) {
             $user = new TelegramUser([
-                'chat_id' => $telegramUserId,
+                'chat_id' => $chatId,
             ]);
             $user->save();
         }
