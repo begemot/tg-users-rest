@@ -34,6 +34,7 @@ public function safeUp()
         'id' => $this->primaryKey(),
         'user_id' => $this->integer()->notNull(),
         'channel_id' => $this->integer()->notNull(),
+        'chat_id' => $this->string(255)->notNull(),
         'has_access' => $this->boolean()->defaultValue(false),
         'granted_at' => $this->timestamp(),
         'created_at' => $this->timestamp()->defaultExpression('CURRENT_TIMESTAMP'),
@@ -60,9 +61,9 @@ public function safeUp()
     );
 
     $this->createIndex(
-        'idx_user_channel_unique',
+        'idx_user_channel_chat_unique',
         'user_channel_access',
-        ['user_id', 'channel_id'],
+        ['user_id', 'channel_id', 'chat_id'],
         true
     );
 }

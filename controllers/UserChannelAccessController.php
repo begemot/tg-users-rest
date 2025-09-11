@@ -14,28 +14,28 @@ class UserChannelAccessController extends ActiveController
 
     public function actionVerify()
     {
-        $channelId = Yii::$app->request->getBodyParam('chat_id');
-        $userChatId = Yii::$app->request->getBodyParam('user_id');
+        $chatId = Yii::$app->request->getBodyParam('chat_id');
+        $telegramUserId = Yii::$app->request->getBodyParam('user_id');
         $channelName = Yii::$app->request->getBodyParam('channel_name');
 
-        if ($channelId === null || $userChatId === null || $channelName === null) {
+        if ($chatId === null || $telegramUserId === null || $channelName === null) {
             Yii::$app->response->statusCode = 400;
             return ['error' => 'chat_id, user_id и channel_name обязательны'];
         }
 
-        $channel = TelegramChannel::findOne(['channel_id' => $channelId]);
+        $channel = TelegramChannel::findOne(['channel_name' => $channelName]);
         if ($channel === null) {
             $channel = new TelegramChannel([
-                'channel_id' => $channelId,
+                'channel_id' => $channelName,
                 'channel_name' => $channelName,
             ]);
             $channel->save();
         }
 
-        $user = TelegramUser::findOne(['chat_id' => $userChatId]);
+        $user = TelegramUser::findOne(['chat_id' => $telegramUserId]);
         if ($user === null) {
             $user = new TelegramUser([
-                'chat_id' => $userChatId,
+                'chat_id' => $telegramUserId,
             ]);
             $user->save();
         }
@@ -43,9 +43,20 @@ class UserChannelAccessController extends ActiveController
         $access = UserChannelAccess::findOne([
             'user_id' => $user->id,
             'channel_id' => $channel->id,
-            'has_access' => 1,
+            'chat_id' => $chatId,
         ]);
 
-        return ['has_access' => $access !== null];
+        if ($access === null) {
+            $access = new UserChannelAccess([
+                'user_id' => $user->id,
+                'channel_id' => $channel->id,
+                'chat_id' => $chatId,
+                'has_access' => 0,
+            ]);
+            $access->save();
+            return ['has_access' => false, 'message' => 'Доступ запрещён'];
+        }
+
+        return ['has_access' => (bool)$access->has_access];
     }
 }

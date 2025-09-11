@@ -10,6 +10,7 @@ use Yii;
  * @property int $id
  * @property int $user_id
  * @property int $channel_id
+ * @property string $chat_id
  * @property int|null $has_access
  * @property string|null $granted_at
  * @property string|null $created_at
@@ -35,10 +36,11 @@ class UserChannelAccess extends \yii\db\ActiveRecord
         return [
             [['granted_at'], 'default', 'value' => null],
             [['has_access'], 'default', 'value' => 0],
-            [['user_id', 'channel_id'], 'required'],
+            [['user_id', 'channel_id', 'chat_id'], 'required'],
             [['user_id', 'channel_id', 'has_access'], 'integer'],
             [['granted_at', 'created_at'], 'safe'],
-            [['user_id', 'channel_id'], 'unique', 'targetAttribute' => ['user_id', 'channel_id']],
+            [['chat_id'], 'string', 'max' => 255],
+            [['user_id', 'channel_id', 'chat_id'], 'unique', 'targetAttribute' => ['user_id', 'channel_id', 'chat_id']],
             [['channel_id'], 'exist', 'skipOnError' => true, 'targetClass' => TelegramChannel::class, 'targetAttribute' => ['channel_id' => 'id']],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => TelegramUser::class, 'targetAttribute' => ['user_id' => 'id']],
         ];
@@ -53,6 +55,7 @@ class UserChannelAccess extends \yii\db\ActiveRecord
             'id' => 'ID',
             'user_id' => 'User ID',
             'channel_id' => 'Channel ID',
+            'chat_id' => 'Chat ID',
             'has_access' => 'Has Access',
             'granted_at' => 'Granted At',
             'created_at' => 'Created At',
